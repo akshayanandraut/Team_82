@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         //request fullscreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        GraphView graph = (GraphView) findViewById(R.id.graph);
+    /*    GraphView graph = (GraphView) findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
                 new DataPoint(0, 1),
                 new DataPoint(1, 5),
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
                 new DataPoint(3, 2),
                 new DataPoint(4, 6)
         });
-        graph.addSeries(series);
+        graph.addSeries(series);*/
     }
 
     @Override
