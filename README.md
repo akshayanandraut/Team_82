@@ -1,4 +1,4 @@
-# HERE GOES THE TITLE FOR APP
+# Investometer
 
 following will be a list of functionalities 
 database used 
