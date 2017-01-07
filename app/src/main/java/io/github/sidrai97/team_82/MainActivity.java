@@ -30,6 +30,9 @@ import com.jjoe64.graphview.series.Series;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import static android.R.id.list;
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
@@ -44,21 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        try {
 
-            JSONArray jr = new JSONArray("Your json string");
-            JSONObject jb = (JSONObject)jr.getJSONObject(0);
-            JSONArray st = jb.getJSONArray("streets");
-            for(int i=0;i<st.length();i++)
-            {
-                String street = st.getString(i);
-                Log.i("..........",""+street);
-                // loop and add it to array or arraylist
-            }
-        }catch(Exception e)
-        {
-            e.printStackTrace();
-        }
 
         CustomListAdapterStock adapter=new CustomListAdapterStock(this, stockName);
         list=(ListView)findViewById(R.id.display_stocks_list);
@@ -97,4 +86,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = getApplicationContext().getAssets().open("stock_list.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
 }
