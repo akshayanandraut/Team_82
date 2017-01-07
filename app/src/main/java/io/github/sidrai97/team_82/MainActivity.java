@@ -1,5 +1,8 @@
 package io.github.sidrai97.team_82;
 
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,16 +26,59 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //request fullscreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
-    /*    GraphView graph = (GraphView) findViewById(R.id.graph);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+        //setContentView(R.layout.display_list);
+   // /*
+        GraphView graph = (GraphView) findViewById(R.id.graph);
+        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[] {
                 new DataPoint(0, 1),
                 new DataPoint(1, 5),
                 new DataPoint(2, 3),
                 new DataPoint(3, 2),
                 new DataPoint(4, 6)
         });
-        graph.addSeries(series);*/
+        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[] {
+                new DataPoint(0, 6),
+                new DataPoint(1, 5),
+                new DataPoint(2, 2),
+                new DataPoint(3, 3),
+                new DataPoint(4, 9)
+        });
+        series1.setColor(Color.RED);
+        series1.setDrawDataPoints(true);
+        series1.setDataPointsRadius(12);
+        series1.setThickness(8);
+
+        // set manual X bounds
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setMinY(-150);
+        graph.getViewport().setMaxY(150);
+
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(4);
+        graph.getViewport().setMaxX(80);
+
+        // enable scaling and scrolling
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setScalableY(true);
+        graph.getViewport().setScrollable(true); // enables horizontal scrolling
+        graph.getViewport().setScrollableY(true); // enables vertical scrolling
+        graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
+        graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
+
+        ///custom stroke
+       /* Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        paint.setStrokeWidth(3);
+        paint.setPathEffect(new DashPathEffect(new float[]{8, 50}, 0));
+        series1.setCustomPaint(paint);*/
+
+
+        graph.addSeries(series1);
+        graph.addSeries(series2);
+
+        //*/
 
 
         //IGNORE ALL THAT IS AFTER AND BEFORE THIS PATTERN ========================----====================
@@ -56,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(MainActivity.this,"Press back once again to exit", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this,"Press back once again to exit from Investomaster", Toast.LENGTH_LONG).show();
         }
 
     }
