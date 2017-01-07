@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class CustomListAdapterStock  extends ArrayAdapter<String> {
 
     private final AppCompatActivity context;
-    private  String[] stockName = {"asdas"};
+    private  String[] stockName;
 
 
     public CustomListAdapterStock(AppCompatActivity context, String[] stockName) {
@@ -35,7 +35,7 @@ public class CustomListAdapterStock  extends ArrayAdapter<String> {
         TextView txtTitle = (TextView) rowView.findViewById(R.id.stock_name);
 
 
-        txtTitle.setText(stockName[position]);
+        txtTitle.setText(stockName[position].replaceAll("[_]", " "));
 
         return rowView;
 
