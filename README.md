@@ -1,6 +1,4 @@
-# Investometer
+# Investomaster
 
-following will be a list of functionalities 
-database used 
-any plugin or library(if used)
-license(if used)
+Brings Live NSE data to your android phone
+Quandl API used 
