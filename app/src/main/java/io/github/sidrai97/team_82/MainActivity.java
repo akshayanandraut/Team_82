@@ -23,14 +23,32 @@ import com.jjoe64.graphview.series.Series;
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 public class MainActivity extends AppCompatActivity {
-
+    private int backPressed = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.display_list);
-        //asd
+
 
     }
+
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        backPressed++;
+        if(backPressed == 2) {
+            super.onBackPressed();
+            finishAffinity();
+
+        }
+        else
+        {
+            Toast.makeText(MainActivity.this,"Press back once again to exit from Investomaster", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
 }
