@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class CustomListAdapterStock  extends ArrayAdapter<String> {
 
     private final AppCompatActivity context;
-    private final String[] stockName;
+    private  String[] stockName = {"asdas"};
 
 
     public CustomListAdapterStock(AppCompatActivity context, String[] stockName) {
