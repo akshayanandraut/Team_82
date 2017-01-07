@@ -5,8 +5,5 @@
 <ListView
     android:layout_height="60dp"
     android:layout_width="match_parent"
-    android:id="@+id/display_list">
-
-
-    </ListView>>
+    android:id="@+id/display_stocks_list"/>
 </LinearLayout>
