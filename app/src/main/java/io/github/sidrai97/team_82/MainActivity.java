@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private int refresh_delay=10000;
     private boolean app_latch=false;
     private JSONObject obj=null;
-    TextView tv,tv2;
+    TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         tv = (TextView) findViewById(R.id.temp_text);
-        tv2 = (TextView) findViewById(R.id.temp_text2);
         try {
             obj = new JSONObject(loadJSON());
         }catch(JSONException e){e.printStackTrace();}
@@ -50,12 +49,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void makeQuandlSearchQuery() {
         String murl="";
-        try {
-            murl = obj.getJSONObject(new Integer(0).toString()).getString("url");
-        }catch(JSONException e){e.printStackTrace();}
-        URL quandlSearchUrl = NetworkUtils.buildUrl(murl);
-        tv2.setText(quandlSearchUrl.toString());
-        new MyTask().execute(quandlSearchUrl);
+
+        for(int i=0;i<14;i++)
+        {
+            try
+            {
+                murl = obj.getJSONObject(new Integer(i).toString()).getString("url");
+            }catch(JSONException e){e.printStackTrace();}
+            URL quandlSearchUrl = NetworkUtils.buildUrl(murl);
+            new MyTask().execute(quandlSearchUrl);
+        }
     }
 
     public class MyTask extends AsyncTask<URL,Void,String>{
@@ -78,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            tv.setText(s);
+            tv.setText(tv.getText()+"\n\n"+s);
         }
     }
 

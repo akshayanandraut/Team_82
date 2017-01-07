@@ -12,10 +12,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="io.github.sidrai97.team_82.MainActivity">
 
-    <TextView
-        android:id="@+id/temp_text2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
