@@ -3,13 +3,4 @@
     <string name="back_button_message">Tap again to exit</string>
     <string name="network_error">Check Internet Connection</string>
     <string name="api_key">NgEs3W5z5732qPtMWrMv</string>
-    <string-array name="category_array">
-        <item>Nifty Energy</item>
-        <item>Nifty Bank</item>
-        <item>Nifty Auto</item>
-        <item>Nifty Auto</item>
-        <item>Nifty Metal</item>
-        <item>Nifty Media</item>
-        <item>Nifty Pharma</item>
-    </string-array>
 </resources>

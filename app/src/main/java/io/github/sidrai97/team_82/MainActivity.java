@@ -3,6 +3,7 @@ package io.github.sidrai97.team_82;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +14,15 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,18 +31,71 @@ public class MainActivity extends AppCompatActivity {
     private int latch_delay=2000;
     private int refresh_delay=10000;
     private boolean app_latch=false;
-
-    Spinner categorySpinner;
+    private JSONObject obj=null;
+    TextView tv,tv2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        categorySpinner = (Spinner) findViewById(R.id.category_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.category_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categorySpinner.setAdapter(adapter);
+
+        tv = (TextView) findViewById(R.id.temp_text);
+        tv2 = (TextView) findViewById(R.id.temp_text2);
+        try {
+            obj = new JSONObject(loadJSON());
+        }catch(JSONException e){e.printStackTrace();}
+
         refresh_data();
+    }
+
+    private void makeQuandlSearchQuery() {
+        String murl="";
+        try {
+            murl = obj.getJSONObject(new Integer(0).toString()).getString("url");
+        }catch(JSONException e){e.printStackTrace();}
+        URL quandlSearchUrl = NetworkUtils.buildUrl(murl);
+        tv2.setText(quandlSearchUrl.toString());
+        new MyTask().execute(quandlSearchUrl);
+    }
+
+    public class MyTask extends AsyncTask<URL,Void,String>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String quandlSearchResults = null;
+            try {
+                quandlSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return quandlSearchResults;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            tv.setText(s);
+        }
+    }
+
+    public String loadJSON() {
+        String json = null;
+        try {
+            InputStream is = getApplicationContext().getAssets().open("document.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 
     private void refresh_data(){
@@ -43,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             //fetch data from internet via asyntask and use asyc task to perform refresh instead of this func
+            makeQuandlSearchQuery();
         }
     }
 
