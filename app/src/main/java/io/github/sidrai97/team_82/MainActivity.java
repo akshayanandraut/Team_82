@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 mindexList.setAdapter(indexListAdaptor);
                 mprogress.setVisibility(View.INVISIBLE);
                 loadfinish=false;
-               // mymenu.findItem(refresh_btn).setEnabled(true);//
+               mymenu.findItem(refresh_btn).setEnabled(true);//
             }
 
 
