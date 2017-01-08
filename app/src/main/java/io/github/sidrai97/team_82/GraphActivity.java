@@ -69,13 +69,20 @@ String url;
 
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
-
+        DataPoint[] high,low,open,close;
+        high=new DataPoint[31];
+        low=new DataPoint[31];
+        open=new DataPoint[31];
+        close=new DataPoint[31];
+        for(int i=0;i<31;i++)
+        {
+            high[i]=new DataPoint(i,1);
+            high[i]=new DataPoint(i,1);
+            high[i]=new DataPoint(i,1);
+            high[i]=new DataPoint(i,1);
+        }
         LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
+
         });
         LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[] {
                 new DataPoint(0, 6),
