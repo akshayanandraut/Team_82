@@ -176,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
             //fetch data from internet via asyntask and use asyc task to perform refresh instead of this func
             indexDataList = new ArrayList<String>();
             makeQuandlSearchQuery();
+
             //indexListAdaptor.notifyDataSetChanged();
         }
     }

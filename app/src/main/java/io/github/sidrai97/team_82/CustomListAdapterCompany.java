@@ -41,12 +41,7 @@ public class CustomListAdapterCompany  extends ArrayAdapter<String> {
         this.context = context;
         this.companyList = companyList;
         // this.stockRate=stockRate;
-
-
-
     }
-
-
 
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
@@ -61,9 +56,7 @@ public class CustomListAdapterCompany  extends ArrayAdapter<String> {
             i++;
         }while(i<companyList.length);
 
-
         txtTitle.setText(companyList[position]);
-
 
         System.out.print("here");
         return rowView;

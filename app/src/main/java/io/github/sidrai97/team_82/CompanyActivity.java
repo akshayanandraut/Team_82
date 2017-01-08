@@ -123,7 +123,7 @@ public class CompanyActivity extends AppCompatActivity {
     public String loadJSONFromAsset() {
         String json = null;
         try {
-            InputStream is = getApplicationContext().getAssets().open("json_stock_list");
+            InputStream is = getApplicationContext().getAssets().open("document.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
