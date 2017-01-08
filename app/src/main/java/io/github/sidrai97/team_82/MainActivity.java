@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     private void makeQuandlSearchQuery() {
         String murl="";
 
-        for(int i=0;i<14;i++)
+        for(int i=0;i<obj.length();i++)
         {
             try
             {
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 mindexList.setAdapter(indexListAdaptor);
                 mprogress.setVisibility(View.INVISIBLE);
                 loadfinish=false;
-                mymenu.findItem(R.id.refresh_btn).setEnabled(true);
+               // mymenu.findItem(R.id.refresh_btn).setEnabled(true);
             }
 
 
@@ -136,9 +136,10 @@ public class MainActivity extends AppCompatActivity {
 
                         JSONObject uniObject = obj.getJSONObject(""+position);
                         String selectedItem = uniObject.getString("name").replaceAll(" ","_");
-                        Toast.makeText(MainActivity.this,""+selectedItem,Toast.LENGTH_LONG).show();
+                       Toast.makeText(MainActivity.this,"MAIN: POS->> "+position,Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this,CompanyActivity.class);
-                        intent.putExtra("stockName",selectedItem);
+
+                        intent.putExtra("stockName",position+"");
                         startActivity(intent);
 
                     }

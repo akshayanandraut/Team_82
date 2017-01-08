@@ -45,16 +45,16 @@ public class CustomListAdapterCompany  extends ArrayAdapter<String> {
 
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.index_list_layout, null, true);
+        View rowView = inflater.inflate(R.layout.index_list_layout_company, null, true);
 
         TextView txtTitle = (TextView) rowView.findViewById(R.id.nse_tag);
 
-        int i=0;
+        /*int i=0;
         do {
-            AsyncTaskRunner runner = new AsyncTaskRunner(context, companyList[i]);
-            runner.execute(companyList[i]);
-            i++;
-        }while(i<companyList.length);
+           // AsyncTaskRunner runner = new AsyncTaskRunner(context, companyList[i]);
+           // runner.execute(companyList[i]);
+           // i++;
+        }while(i<companyList.length);*/
 
         txtTitle.setText(companyList[position]);
 
@@ -62,7 +62,7 @@ public class CustomListAdapterCompany  extends ArrayAdapter<String> {
         return rowView;
 
     };
-    public JSONObject getJSONObjectFromURL(String urlString) throws IOException, JSONException {
+  /*  public JSONObject getJSONObjectFromURL(String urlString) throws IOException, JSONException {
         System.out.print("here1");
         HttpURLConnection urlConnection = null;
 
@@ -71,8 +71,8 @@ public class CustomListAdapterCompany  extends ArrayAdapter<String> {
         urlConnection = (HttpURLConnection) url.openConnection();
 
         urlConnection.setRequestMethod("GET");
-        urlConnection.setReadTimeout(10000 /* milliseconds */);
-        urlConnection.setConnectTimeout(15000 /* milliseconds */);
+        urlConnection.setReadTimeout(10000 );
+        urlConnection.setConnectTimeout(15000 );
 
         urlConnection.setDoOutput(true);
 
@@ -123,8 +123,8 @@ public class CustomListAdapterCompany  extends ArrayAdapter<String> {
                     int date = c.get(Calendar.DATE);
 
 
-                    JSONObject obj = getJSONObjectFromURL("https://www.quandl.com/api/v3/datasets/NSE/"+companyName+"?start_date="+year+"-"+month+"-"+date+"api_key=Q--br_sJjG98J4pM1R5M");
-                    System.out.print(obj);
+                    //JSONObject obj = getJSONObjectFromURL("https://www.quandl.com/api/v3/datasets/NSE/"+companyName+"?start_date="+year+"-"+month+"-"+date+"api_key=Q--br_sJjG98J4pM1R5M");
+                   // System.out.print(obj);
 
                     //JSONObject obj1 = obj.getJSONObject(stockName+"");
                     //JSONArray m_jArry = obj1.getJSONArray("stock_url");
@@ -161,5 +161,5 @@ public class CustomListAdapterCompany  extends ArrayAdapter<String> {
         }
 
 
-    }
+    }*/
 }

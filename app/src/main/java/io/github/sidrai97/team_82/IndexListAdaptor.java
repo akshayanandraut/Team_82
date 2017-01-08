@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,6 +57,8 @@ public class IndexListAdaptor extends BaseAdapter {
         JSONObject obj=null;
         try {
             obj = new JSONObject((String) getItem(position));
+           // Toast.makeText(context,"-------------------\n"+obj,Toast.LENGTH_SHORT).show();
+
             String fullname = obj.getJSONObject("dataset").getString("name");
             int pos = fullname.lastIndexOf("-");
             String name = fullname.substring(pos+1);
