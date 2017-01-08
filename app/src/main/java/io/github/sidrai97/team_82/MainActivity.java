@@ -5,15 +5,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,23 +21,28 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
     private int latch_delay=2000;
-    private int refresh_delay=10000;
+    private long refresh_delay=60000;
     private boolean app_latch=false;
     private JSONObject obj=null;
-    TextView tv;
+    ListView mindexList;
+    ProgressBar mprogress;
+    ArrayList<String> indexDataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tv = (TextView) findViewById(R.id.temp_text);
+        mindexList = (ListView) findViewById(R.id.indexList);
+        mprogress = (ProgressBar) findViewById(R.id.progress);
+
         try {
             obj = new JSONObject(loadJSON());
         }catch(JSONException e){e.printStackTrace();}
@@ -59,12 +62,14 @@ public class MainActivity extends AppCompatActivity {
             URL quandlSearchUrl = NetworkUtils.buildUrl(murl);
             new MyTask().execute(quandlSearchUrl);
         }
+
     }
 
     public class MyTask extends AsyncTask<URL,Void,String>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mprogress.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -81,7 +86,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            tv.setText(tv.getText()+"\n\n"+s);
+            //tv.setText(tv.getText()+"\n\n"+s);
+            indexDataList.add(s);
+            IndexListAdaptor indexListAdaptor = new IndexListAdaptor(MainActivity.this,indexDataList);
+            mindexList.setAdapter(indexListAdaptor);
+            mprogress.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -107,7 +116,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             //fetch data from internet via asyntask and use asyc task to perform refresh instead of this func
+            indexDataList = new ArrayList<String>();
             makeQuandlSearchQuery();
+            //indexListAdaptor.notifyDataSetChanged();
         }
     }
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/nse_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NIFTY"/>
+        <TextView
+            android:id="@+id/nse_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="06/01"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/nse_high_to_low"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1000-2000"
+            android:layout_gravity="right"/>
+        <TextView
+            android:id="@+id/nse_rise_fall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ - 500"
+            android:layout_gravity="right"/>
+    </LinearLayout>
+</LinearLayout>
