@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         JSONObject uniObject = obj.getJSONObject(""+position);
                         String selectedItem = uniObject.getString("name").replaceAll(" ","_");
-                       Toast.makeText(MainActivity.this,"MAIN: POS->> "+position,Toast.LENGTH_SHORT).show();
+                       //Toast.makeText(MainActivity.this,"MAIN: POS->> "+position,Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this,CompanyActivity.class);
 
                         intent.putExtra("stockName",position+"");
