@@ -1,126 +1,159 @@
 package io.github.sidrai97.team_82;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.Paint;
-import android.os.SystemClock;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
-import io.github.sidrai97.team_82.*;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.helper.StaticLabelsFormatter;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.DataPointInterface;
-import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.OnDataPointTapListener;
-import com.jjoe64.graphview.series.PointsGraphSeries;
-import com.jjoe64.graphview.series.Series;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import static android.R.id.list;
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CompanyActivity extends AppCompatActivity {
 
+    private int latch_delay=2000;
+    private long refresh_delay=60000;
+    private boolean app_latch=false;
+    private JSONObject obj=null;
+    ListView mindexList;
+    ProgressBar mprogress;
+    private long refreshTime = 120000;
+    ArrayList<String> indexDataList;
+    boolean loadfinish=false;
+    Menu mymenu;
 
-    ListView list;
-//get company names for selected type
-    String[] companyList;
-    private String stockName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Bundle extras = getIntent().getExtras();
-        stockName = extras.getString("stockName");
+
+        mindexList = (ListView) findViewById(R.id.indexList);
+        mprogress = (ProgressBar) findViewById(R.id.progress);
 
         try {
-            JSONObject obj = new JSONObject(loadJSONFromAsset());
-            JSONObject obj1 = obj.getJSONObject(stockName);
-            JSONArray m_jArry = obj1.getJSONArray("stock_url");
-            int i=0;
-            companyList = new String[m_jArry.length()];
-            do
-            {
-                companyList[i] = m_jArry.getString(i);
-                i++;
-            }while(i<m_jArry.length());
-
-            //System.out.println("CHECK THIS Out--------->  "+companyList[3]);
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            obj = new JSONObject(loadJSON());
+        }catch(JSONException e){e.printStackTrace();}
 
 
 
-        CustomListAdapterCompany adapter=new CustomListAdapterCompany(this, companyList);
-        list=(ListView)findViewById(R.id.indexList);
-        list.setAdapter(adapter);
 
+        refresh_data();
+        //restartTimer();
+    }
 
-        list.setOnItemClickListener(new OnItemClickListener() {
+    public void restartTimer()
+    {
+        new CountDownTimer(refreshTime, refreshTime) {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // TODO Auto-generated method stub
-                System.out.println(position);
-                String selectedItem= companyList[+position];
-                System.out.println(position);
-                Intent i = new Intent(CompanyActivity.this,GraphActivity.class);
-                i.putExtra("companyName",""+companyList[+position]);
-                System.out.println(position);
-                startActivity(i);
-                //Toast.makeText(getApplicationContext(), selectedItem.replaceAll("_"," "), Toast.LENGTH_SHORT).show();
+            public void onTick(long millisUntilFinished) {
 
             }
-        });
 
-        try {
-            JSONObject obj = new JSONObject(loadJSONFromAsset());
-            JSONObject obj1 = obj.getJSONObject(stockName);
-            JSONArray m_jArry = obj1.getJSONArray("stock_url");
+            public void onFinish() {
+                Toast.makeText(getApplicationContext(),"Refreshing",Toast.LENGTH_SHORT).show();
+                refresh_data();
+                restartTimer();
+            }
+        }.start();
+    }
+    private void makeQuandlSearchQuery() {
+        String murl="";
 
-            System.out.println(m_jArry);
-            // Toast.makeText(getApplicationContext(), , Toast.LENGTH_SHORT).show();
-
+        for(int i=0;i<14;i++)
+        {
+            try
+            {
+                murl = obj.getJSONObject(new Integer(i).toString()).getString("url");
+            }catch(JSONException e){e.printStackTrace();}
+            URL quandlSearchUrl = NetworkUtils.buildUrl(murl);
+            new MyTask().execute(quandlSearchUrl);
         }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
 
     }
 
+    public class MyTask extends AsyncTask<URL,Void,String>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mprogress.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String quandlSearchResults = null;
+            try {
+                quandlSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(searchUrl.toString().contains("COMMODITIES")){
+                loadfinish=true;
+            }
+            return quandlSearchResults;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            //tv.setText(tv.getText()+"\n\n"+s);
+            indexDataList.add(s);
+            if(loadfinish){
+                IndexListAdaptor indexListAdaptor = new IndexListAdaptor(CompanyActivity.this,indexDataList);
+                mindexList.setAdapter(indexListAdaptor);
+                mprogress.setVisibility(View.INVISIBLE);
+                loadfinish=false;
+                mymenu.findItem(R.id.refresh_btn).setEnabled(true);
+            }
+
+
+            mindexList.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                    String item = (String) mindexList.getItemAtPosition(position);
+                    //Toast.makeText(MainActivity.this,""+item,Toast.LENGTH_LONG).show();
+                    try {
+                        //JSONObject mainObject = new JSONObject();
+
+                        JSONObject uniObject = obj.getJSONObject(""+position);
+                        String selectedItem = uniObject.getString("name").replaceAll(" ","_");
+                        Toast.makeText(CompanyActivity.this,""+selectedItem,Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(CompanyActivity.this,CompanyActivity.class);
+                        intent.putExtra("stockName",selectedItem);
+                        startActivity(intent);
+
+                    }
+                    catch (Exception e)
+                    {e.printStackTrace();}
+                }
+            });
 
 
 
 
-    public String loadJSONFromAsset() {
+        }
+    }
+
+    public String loadJSON() {
         String json = null;
         try {
             InputStream is = getApplicationContext().getAssets().open("document.json");
@@ -135,4 +168,48 @@ public class CompanyActivity extends AppCompatActivity {
         }
         return json;
     }
+
+    private void refresh_data(){
+        if(!isNetworkAvailable()){
+            Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_LONG).show();
+            mprogress.setVisibility(View.INVISIBLE);
+        }
+        else{
+            if(mymenu != null) {
+                mymenu.findItem(R.id.refresh_btn).setEnabled(false);
+            }
+            //fetch data from internet via asyntask and use asyc task to perform refresh instead of this func
+            indexDataList = new ArrayList<String>();
+            makeQuandlSearchQuery();
+            //indexListAdaptor.notifyDataSetChanged();
+        }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        mymenu=menu;
+        getMenuInflater().inflate(R.menu.app_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.refresh_btn){
+            Toast.makeText(getApplicationContext(),"Refreshing",Toast.LENGTH_SHORT).show();
+            refresh_data();
+        }
+        else if(item.getItemId() == R.id.favourites_tab){
+            Toast.makeText(getApplicationContext(),"show favourites",Toast.LENGTH_SHORT).show();
+            //intent to go to favourites activity
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }
