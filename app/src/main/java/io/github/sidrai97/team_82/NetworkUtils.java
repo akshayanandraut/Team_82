@@ -21,7 +21,7 @@ public class NetworkUtils {
 
     public static URL buildUrl(String quandlSearchQuery) {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
+        cal.add(Calendar.DATE, -2);
 
         Uri builtUri = Uri.parse(QUANDL_BASE_URL+quandlSearchQuery+".json").buildUpon()
                 .appendQueryParameter(PARAM_API_KEY, API_KEY)

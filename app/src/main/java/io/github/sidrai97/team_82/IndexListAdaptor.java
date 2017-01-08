@@ -1,12 +1,15 @@
 package io.github.sidrai97.team_82;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,21 +60,25 @@ public class IndexListAdaptor extends BaseAdapter {
             int pos = fullname.lastIndexOf("-");
             String name = fullname.substring(pos+1);
             myViewHolder.nse_tag.setText(name);
+            Log.d("JSON ME LAGE","BAMBOO");
+            JSONArray all_data=obj.getJSONObject("dataset").getJSONArray("data");
+            JSONArray latest_data=all_data.getJSONArray(0);
 
-            String date=obj.getJSONObject("dataset").getJSONArray("data").getJSONArray(0).getString(0);
+            String date=latest_data.getString(0);
             myViewHolder.nse_date.setText(date);
 
-            String htl = obj.getJSONObject("dataset").getJSONArray("data").getJSONArray(0).getString(2) +
-                    " - "+ obj.getJSONObject("dataset").getJSONArray("data").getJSONArray(0).getString(3);
+            String htl = latest_data.getDouble(2) + " - "+ latest_data.getDouble(3);
             myViewHolder.nse_high_to_low.setText(htl);
 
-            float rf = new Float(obj.getJSONObject("dataset").getJSONArray("data").getJSONArray(0).getString(4))-
-                    new Float(obj.getJSONObject("dataset").getJSONArray("data").getJSONArray(0).getString(1));
+            float rf = new Float(latest_data.getDouble(4))-
+                    new Float(latest_data.getDouble(1));
             String rf_set="";
             if(rf>0){
-                rf_set=" + "+rf;
+                rf_set=" +"+rf;
+                myViewHolder.nse_rise_fall.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
             }else{
-                rf_set=" - "+rf;
+                rf_set=" "+rf;
+                myViewHolder.nse_rise_fall.setTextColor(ContextCompat.getColor(context,R.color.danger));
             }
             myViewHolder.nse_rise_fall.setText(rf_set);
         }catch (JSONException e){e.printStackTrace();}
