@@ -36,6 +36,30 @@ String url;
     final static String PARAM_END_DATE = "end_date";
     JSONObject obj;
     String data;
+    String data="";
+    boolean latch_shows_fetch_data_success=true;//false when success
+
+    public class StockDataTask extends AsyncTask<URL,Void,String>{
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String quandlSearchResults = null;
+            try {
+                quandlSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return quandlSearchResults;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            data=s;
+            latch_shows_fetch_data_success=false;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +71,10 @@ String url;
         }
         catch(IOException e){e.printStackTrace();}
         System.out.print("===================="+data);
+        new StockDataTask().execute(NetworkUtils.buildUrl2(companyName));
+
+        while(latch_shows_fetch_data_success){}//stay here until i have stock data
+        System.out.print("===================="+obj);
 
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
@@ -129,6 +157,40 @@ String url;
 
     }
 
+    public  JSONObject getJSONObjectFromURL(URL urlString) throws IOException, JSONException {
 
+        HttpURLConnection urlConnection = null;
+
+        URL url = urlString;
+
+        urlConnection = (HttpURLConnection) url.openConnection();
+
+        urlConnection.setRequestMethod("GET");
+        urlConnection.setReadTimeout(10000 /* milliseconds */);
+        urlConnection.setConnectTimeout(15000 /* milliseconds */);
+
+        urlConnection.setDoOutput(true);
+
+        urlConnection.connect();
+
+        BufferedReader br=new BufferedReader(new InputStreamReader(url.openStream()));
+
+        char[] buffer = new char[1024];
+
+        String jsonString = new String();
+
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line+"\n");
+        }
+        br.close();
+
+        jsonString = sb.toString();
+
+        System.out.println("JSON: " + jsonString);
+
+        return new JSONObject(jsonString);
+    }
 
 }
