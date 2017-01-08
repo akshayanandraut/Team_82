@@ -1,15 +1,18 @@
 package io.github.sidrai97.team_82;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private JSONObject obj=null;
     ListView mindexList;
     ProgressBar mprogress;
+    private long refreshTime = 10000;//filhaal 10 seconds hai...baadme chane it to 120000
     ArrayList<String> indexDataList;
 
     @Override
@@ -47,9 +51,27 @@ public class MainActivity extends AppCompatActivity {
             obj = new JSONObject(loadJSON());
         }catch(JSONException e){e.printStackTrace();}
 
+
+
+
         refresh_data();
+        restartTimer();
     }
 
+    public void restartTimer()
+    {
+        new CountDownTimer(refreshTime, refreshTime) {
+
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            public void onFinish() {
+                refresh_data();
+                restartTimer();
+            }
+        }.start();
+    }
     private void makeQuandlSearchQuery() {
         String murl="";
 
@@ -91,6 +113,24 @@ public class MainActivity extends AppCompatActivity {
             IndexListAdaptor indexListAdaptor = new IndexListAdaptor(MainActivity.this,indexDataList);
             mindexList.setAdapter(indexListAdaptor);
             mprogress.setVisibility(View.INVISIBLE);
+
+
+           /* mindexList.setOnClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    // TODO Auto-generated method stub
+                    String selectedItem= stockName[+position];
+                    //Toast.makeText(getApplicationContext(), selectedItem.replaceAll("_"," "), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this,CompanyActivity.class);
+                    intent.putExtra("stockName",stockName[+position]);
+                    startActivity(intent);
+
+                }
+            });*/
+
+
         }
     }
 
