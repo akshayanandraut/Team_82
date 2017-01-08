@@ -9,6 +9,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -127,12 +128,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
                     String item = (String) mindexList.getItemAtPosition(position);
-
+                    //Toast.makeText(MainActivity.this,""+item,Toast.LENGTH_LONG).show();
                     try {
-                        JSONObject mainObject = new JSONObject(item);
-                        JSONObject uniObject = mainObject.getJSONObject(""+ position);
-                        String selectedItem = uniObject.getString("name").replaceAll(" ","_");
+                        //JSONObject mainObject = new JSONObject();
 
+                        JSONObject uniObject = obj.getJSONObject(""+position);
+                        String selectedItem = uniObject.getString("name").replaceAll(" ","_");
+                        Toast.makeText(MainActivity.this,""+selectedItem,Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(MainActivity.this,CompanyActivity.class);
                         intent.putExtra("stockName",selectedItem);
                         startActivity(intent);
