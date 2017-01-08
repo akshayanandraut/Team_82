@@ -60,7 +60,7 @@ public class IndexListAdaptor extends BaseAdapter {
             int pos = fullname.lastIndexOf("-");
             String name = fullname.substring(pos+1);
             myViewHolder.nse_tag.setText(name);
-            Log.d("JSON ME LAGE","BAMBOO");
+            //Log.d("JSON ME LAGE","BAMBOO");
             JSONArray all_data=obj.getJSONObject("dataset").getJSONArray("data");
             JSONArray latest_data=all_data.getJSONArray(0);
 
