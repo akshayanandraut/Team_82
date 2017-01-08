@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     private void refresh_data(){
         if(!isNetworkAvailable()){
             Toast.makeText(getApplicationContext(),R.string.network_error,Toast.LENGTH_LONG).show();
+            mprogress.setVisibility(View.INVISIBLE);
         }
         else{
             //fetch data from internet via asyntask and use asyc task to perform refresh instead of this func
