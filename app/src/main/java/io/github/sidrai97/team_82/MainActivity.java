@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private JSONObject obj=null;
     ListView mindexList;
     ProgressBar mprogress;
-    private long refreshTime = 10000;//filhaal 10 seconds hai...baadme chane it to 120000
+    private long refreshTime = 120000;
     ArrayList<String> indexDataList;
 
     @Override
@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.refresh_btn){
             Toast.makeText(getApplicationContext(),"Refreshing",Toast.LENGTH_SHORT).show();
             refresh_data();
+            restartTimer();
         }
         else if(item.getItemId() == R.id.favourites_tab){
             Toast.makeText(getApplicationContext(),"show favourites",Toast.LENGTH_SHORT).show();
