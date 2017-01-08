@@ -18,7 +18,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,12 +35,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean app_latch=false;
     private JSONObject obj=null;
     ListView mindexList;
-
     ProgressBar mprogress;
-    String[] stockName = {"NIFTY_50","NIFTY_MIDCAP_50","NIFTY_AUTO","NIFTY_BANK","NIFTY_ENERGY","NIFTY_FIN_SERVICE","NIFTY_FMCG","NIFTY_IT","NIFTY_MEDIA","NIFTY_METAL","NIFTY_PHARMA","NIFTY_PSU_BANK","NIFTY_REALTY","NIFTY_COMMODITIES"};
-
-    private long refreshTime = 120000;//filhaal 10 seconds hai...baadme chane it to 120000
+    private long refreshTime = 120000;
     ArrayList<String> indexDataList;
+    boolean loadfinish=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             obj = new JSONObject(loadJSON());
-
-
         }catch(JSONException e){e.printStackTrace();}
 
 
@@ -73,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
+                Toast.makeText(getApplicationContext(),"Refreshing",Toast.LENGTH_SHORT).show();
                 refresh_data();
                 restartTimer();
             }
@@ -109,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            if(searchUrl.toString().contains("COMMODITIES")){
+                loadfinish=true;
+            }
             return quandlSearchResults;
         }
 
@@ -118,30 +117,32 @@ public class MainActivity extends AppCompatActivity {
             indexDataList.add(s);
             IndexListAdaptor indexListAdaptor = new IndexListAdaptor(MainActivity.this,indexDataList);
             mindexList.setAdapter(indexListAdaptor);
-            mprogress.setVisibility(View.INVISIBLE);
+            if(loadfinish){
+                mprogress.setVisibility(View.INVISIBLE);
+                loadfinish=false;
+            }
+
 
             mindexList.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
                     String item = (String) mindexList.getItemAtPosition(position);
-                    //Toast.makeText(MainActivity.this,"item:--"+item+"\n  pos"+position,Toast.LENGTH_LONG).show();
-
 
                     try {
-                        JSONObject obj1 = new JSONObject(item);
-                        JSONObject obj2 = obj.getJSONObject(""+position);
-                        String selectedItem = obj2.getString("name").replaceAll(" ","_");
+                        JSONObject mainObject = new JSONObject(item);
+                        JSONObject uniObject = mainObject.getJSONObject(""+ position);
+                        String selectedItem = uniObject.getString("name").replaceAll(" ","_");
 
-                        //Toast.makeText(MainActivity.this,""+selectedItem,Toast.LENGTH_LONG).show();
-                        Intent intent = new  Intent(MainActivity.this,CompanyActivity.class);
+                        Intent intent = new Intent(MainActivity.this,CompanyActivity.class);
                         intent.putExtra("stockName",selectedItem);
                         startActivity(intent);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
 
+                    }
+                    catch (Exception e)
+                    {e.printStackTrace();}
                 }
             });
+
 
 
 
@@ -161,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
             ex.printStackTrace();
             return null;
         }
-
         return json;
     }
 
