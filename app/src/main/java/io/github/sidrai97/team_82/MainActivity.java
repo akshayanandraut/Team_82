@@ -175,6 +175,9 @@ public class MainActivity extends AppCompatActivity {
             mprogress.setVisibility(View.INVISIBLE);
         }
         else{
+            if(mymenu != null) {
+                mymenu.findItem(R.id.refresh_btn).setEnabled(false);
+            }
             //fetch data from internet via asyntask and use asyc task to perform refresh instead of this func
             indexDataList = new ArrayList<String>();
             makeQuandlSearchQuery();
@@ -190,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        mymenu=menu;
         getMenuInflater().inflate(R.menu.app_menu,menu);
         return true;
     }
