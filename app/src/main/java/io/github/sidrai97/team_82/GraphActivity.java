@@ -35,6 +35,7 @@ String url;
     final static String PARAM_START_DATE = "start_date";
     final static String PARAM_END_DATE = "end_date";
     JSONObject obj;
+    String data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +43,10 @@ String url;
         setContentView(R.layout.activity_graph);
 
         try {
-            String data = NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl2(companyName));
+             data = NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl2(companyName));
         }
         catch(IOException e){e.printStackTrace();}
-        System.out.print("===================="+obj);
+        System.out.print("===================="+data);
 
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
@@ -57,9 +58,9 @@ String url;
         for(int i=0;i<31;i++)
         {
             high[i]=new DataPoint(i,1);
-            high[i]=new DataPoint(i,1);
-            high[i]=new DataPoint(i,1);
-            high[i]=new DataPoint(i,1);
+            low[i]=new DataPoint(i,1);
+            open[i]=new DataPoint(i,1);
+            close[i]=new DataPoint(i,1);
         }
         LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[] {
 
@@ -126,40 +127,6 @@ String url;
 
     }
 
-    public  JSONObject getJSONObjectFromURL(URL urlString) throws IOException, JSONException {
 
-        HttpURLConnection urlConnection = null;
-
-        URL url = urlString;
-
-        urlConnection = (HttpURLConnection) url.openConnection();
-
-        urlConnection.setRequestMethod("GET");
-        urlConnection.setReadTimeout(10000 /* milliseconds */);
-        urlConnection.setConnectTimeout(15000 /* milliseconds */);
-
-        urlConnection.setDoOutput(true);
-
-        urlConnection.connect();
-
-        BufferedReader br=new BufferedReader(new InputStreamReader(url.openStream()));
-
-        char[] buffer = new char[1024];
-
-        String jsonString = new String();
-
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) {
-            sb.append(line+"\n");
-        }
-        br.close();
-
-        jsonString = sb.toString();
-
-        System.out.println("JSON: " + jsonString);
-
-        return new JSONObject(jsonString);
-    }
 
 }
