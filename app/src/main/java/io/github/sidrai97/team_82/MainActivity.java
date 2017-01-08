@@ -119,9 +119,9 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             //tv.setText(tv.getText()+"\n\n"+s);
             indexDataList.add(s);
+            IndexListAdaptor indexListAdaptor = new IndexListAdaptor(MainActivity.this,indexDataList);
+            mindexList.setAdapter(indexListAdaptor);
             if(loadfinish){
-                IndexListAdaptor indexListAdaptor = new IndexListAdaptor(MainActivity.this,indexDataList);
-                mindexList.setAdapter(indexListAdaptor);
                 mprogress.setVisibility(View.INVISIBLE);
                 loadfinish=false;
                mymenu.findItem(refresh_btn).setEnabled(true);//
