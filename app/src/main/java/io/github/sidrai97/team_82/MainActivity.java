@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private long refreshTime = 120000;
     ArrayList<String> indexDataList;
     boolean loadfinish=false;
+    Menu mymenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         refresh_data();
-        restartTimer();
+        //restartTimer();
     }
 
     public void restartTimer()
@@ -116,11 +117,12 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             //tv.setText(tv.getText()+"\n\n"+s);
             indexDataList.add(s);
-            IndexListAdaptor indexListAdaptor = new IndexListAdaptor(MainActivity.this,indexDataList);
-            mindexList.setAdapter(indexListAdaptor);
             if(loadfinish){
+                IndexListAdaptor indexListAdaptor = new IndexListAdaptor(MainActivity.this,indexDataList);
+                mindexList.setAdapter(indexListAdaptor);
                 mprogress.setVisibility(View.INVISIBLE);
                 loadfinish=false;
+                mymenu.findItem(R.id.refresh_btn).setEnabled(true);
             }
 
 
@@ -173,10 +175,12 @@ public class MainActivity extends AppCompatActivity {
             mprogress.setVisibility(View.INVISIBLE);
         }
         else{
+            if(mymenu != null) {
+                mymenu.findItem(R.id.refresh_btn).setEnabled(false);
+            }
             //fetch data from internet via asyntask and use asyc task to perform refresh instead of this func
             indexDataList = new ArrayList<String>();
             makeQuandlSearchQuery();
-
             //indexListAdaptor.notifyDataSetChanged();
         }
     }
@@ -189,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        mymenu=menu;
         getMenuInflater().inflate(R.menu.app_menu,menu);
         return true;
     }

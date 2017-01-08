@@ -5,7 +5,8 @@
         android:icon="@drawable/ic_refresh_white_48dp"
         android:title="Refresh"
         android:orderInCategory="1"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:enabled="false"/>
     <item android:id="@+id/favourites_tab"
         android:title="Favourites"
         android:orderInCategory="2"
