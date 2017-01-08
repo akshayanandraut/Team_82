@@ -2,6 +2,7 @@ package io.github.sidrai97.team_82;
 
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -35,16 +36,39 @@ String url;
     final static String PARAM_START_DATE = "start_date";
     final static String PARAM_END_DATE = "end_date";
     JSONObject obj;
+    String data="";
+    boolean latch_shows_fetch_data_success=true;//false when success
+
+    public class StockDataTask extends AsyncTask<URL,Void,String>{
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String quandlSearchResults = null;
+            try {
+                quandlSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return quandlSearchResults;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            data=s;
+            latch_shows_fetch_data_success=false;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String companyName = getIntent().getExtras().getString("companyName");
         setContentView(R.layout.activity_graph);
 
-        try {
-            String data = NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl2(companyName));
-        }
-        catch(IOException e){e.printStackTrace();}
+        new StockDataTask().execute(NetworkUtils.buildUrl2(companyName));
+
+        while(latch_shows_fetch_data_success){}//stay here until i have stock data
         System.out.print("===================="+obj);
 
 
