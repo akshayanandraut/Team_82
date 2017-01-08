@@ -94,6 +94,7 @@ String url;
             close[i]=new DataPoint(i,i4);
         }
 
+
         LineGraphSeries<DataPoint> seriesHigh = new LineGraphSeries<>(high);
         LineGraphSeries<DataPoint> seriesLow = new LineGraphSeries<>(low);
         LineGraphSeries<DataPoint> seriesOpen = new LineGraphSeries<>(open);
