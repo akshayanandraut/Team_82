@@ -58,11 +58,8 @@ public class CompanyActivity extends AppCompatActivity {
         stockName = extras.getString("stockName");
        try {
             JSONObject obj = new JSONObject(loadJSONFromAsset());
-           System.out.println("JSON OBJ1 ---------------------->"+obj);
             JSONObject obj1 = obj.getJSONObject(""+stockName);
-           System.out.println("JSON OBJ2 ---------------------->"+obj1);
-
-           JSONArray m_jArry = obj1.getJSONArray("stock_url");
+            JSONArray m_jArry = obj1.getJSONArray("stock_url");
             int i=0;
             companyList = new String[m_jArry.length()];
             do
@@ -84,12 +81,12 @@ public class CompanyActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // TODO Auto-generated method stub
-                System.out.println(position);
+
                 String selectedItem= companyList[+position];
-                System.out.println(position);
+
                 Intent i = new Intent(CompanyActivity.this,GraphActivity.class);
                 i.putExtra("companyName",""+companyList[+position]);
-                System.out.println(position);
+
                 startActivity(i);
             }
         });

@@ -21,6 +21,7 @@
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".CompanyActivity"/>
+        <activity android:name=".GraphActivity"/>
     </application>
 
 </manifest>

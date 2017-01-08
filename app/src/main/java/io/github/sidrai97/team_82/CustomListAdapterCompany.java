@@ -44,7 +44,6 @@ public class CustomListAdapterCompany  extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.index_list_layout_company, null, true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.nse_tag);
         txtTitle.setText(companyList[position]);
-        System.out.print("here");
         return rowView;
 
     };

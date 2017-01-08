@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <TextView
         android:id="@+id/nse_tag"
         android:layout_width="match_parent"
-        android:layout_height="71dp"
+        android:layout_height="80dp"
         android:text="NIFTY"
-        android:gravity="center_vertical"
+        android:textAlignment="gravity"
+        android:paddingLeft="30dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center"
         android:textStyle="bold"
+        android:textAllCaps="false"
+
         android:textSize="20sp"/>
+
 </LinearLayout>

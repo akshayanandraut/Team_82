@@ -1,33 +1,75 @@
 package io.github.sidrai97.team_82;
 
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.DataPointInterface;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class GraphActivity extends AppCompatActivity {
-
+String url;
+    final static String QUANDL_BASE_URL = "https://www.quandl.com/api/v3/datasets/NSE/";
+    final static String API_KEY="Q--br_sJjG98J4pM1R5M";
+    final static String PARAM_API_KEY = "api_key";
+    final static String PARAM_START_DATE = "start_date";
+    final static String PARAM_END_DATE = "end_date";
+    JSONObject obj;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-        //turn off title
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //request fullscreen
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        String companyName = getIntent().getExtras().getString("companyName");
         setContentView(R.layout.activity_graph);
-        //setContentView(R.layout.display_list);
-        // /*
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+
+        Uri builtUri = Uri.parse(QUANDL_BASE_URL+companyName+".json").buildUpon()
+                .appendQueryParameter(PARAM_API_KEY, API_KEY)
+                .appendQueryParameter(PARAM_START_DATE, new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()))
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            obj = getJSONObjectFromURL(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.out.print("===================="+obj);
+
+
         GraphView graph = (GraphView) findViewById(R.id.graph);
-        //GraphView graph1 = (GraphView) findViewById(R.id.graph1);
+
         LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[] {
                 new DataPoint(0, 1),
                 new DataPoint(1, 5),
@@ -43,22 +85,8 @@ public class GraphActivity extends AppCompatActivity {
                 new DataPoint(4, 9)
         });
 
-        //graph2
-     /*   BarGraphSeries<DataPoint> series3 = new BarGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
-        });
-        BarGraphSeries<DataPoint> series4 = new BarGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 6),
-                new DataPoint(1, 5),
-                new DataPoint(2, 2),
-                new DataPoint(3, 3),
-                new DataPoint(4, 9)
-        });
-*/
+
+
 
 
         //graph1 config
@@ -87,79 +115,64 @@ public class GraphActivity extends AppCompatActivity {
         graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
         graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
 
-        //graph1 scroll config
-        // set manual X bounds
-/*        graph1.getViewport().setYAxisBoundsManual(true);
-        graph1.getViewport().setMinY(-150);
-        graph1.getViewport().setMaxY(150);
 
-        graph1.getViewport().setXAxisBoundsManual(true);
-        graph1.getViewport().setMinX(4);
-        graph1.getViewport().setMaxX(80);
-
-        // enable scaling and scrolling
-        graph1.getViewport().setScalable(true);
-        graph1.getViewport().setScalableY(true);
-        graph1.getViewport().setScrollable(true); // enables horizontal scrolling
-        graph1.getViewport().setScrollableY(true); // enables vertical scrolling
-        graph1.getViewport().setScalable(true); // enables horizontal zooming and scrolling
-        graph1.getViewport().setScalableY(true); // enables vertical zooming and scrolling
-
-        //graph2 series config
-        series3.setSpacing(1);
-        series4.setSpacing(10);
-*/
-
-        ///custom stroke
-       /* Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
-        paint.setStrokeWidth(3);
-        paint.setPathEffect(new DashPathEffect(new float[]{8, 50}, 0));
-        series1.setCustomPaint(paint);*/
 
 //Listen on Tap
 /*
         series1.setOnDataPointTapListener(new OnDataPointTapListener() {
             @Override
             public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(MainActivity.this, ""+dataPoint, Toast.LENGTH_SHORT).show();
+                Toast.makeText(GraphActivity.this, ""+dataPoint, Toast.LENGTH_SHORT).show();
             }
         });
+
 */
 
 
-        //Labels
-        // String[] time = {"jan","feb","march","april"};
-        // String[] up_downs  = {"0","5","10","15","20","25","30","35","40","45","50","55","60","65","70","75","80","85","90","95","100"};
-        // StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
-        // staticLabelsFormatter.setHorizontalLabels(time);
-        // staticLabelsFormatter.setVerticalLabels(up_downs);
-        //  graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
-
-
-        // series3.setColor(Color.RED);
 
 
 
 
         graph.addSeries(series1);
         graph.addSeries(series2);
-        //  graph1.addSeries(series4);
-        //graph1.addSeries(series3);
 
-
-        //*/
-
-
-        //IGNORE ALL THAT IS AFTER AND BEFORE THIS PATTERN ========================----====================
-
-
-
-
-
-        // ========================----====================
 
     }
 
+    public  JSONObject getJSONObjectFromURL(URL urlString) throws IOException, JSONException {
+
+        HttpURLConnection urlConnection = null;
+
+        URL url = urlString;
+
+        urlConnection = (HttpURLConnection) url.openConnection();
+
+        urlConnection.setRequestMethod("GET");
+        urlConnection.setReadTimeout(10000 /* milliseconds */);
+        urlConnection.setConnectTimeout(15000 /* milliseconds */);
+
+        urlConnection.setDoOutput(true);
+
+        urlConnection.connect();
+
+        BufferedReader br=new BufferedReader(new InputStreamReader(url.openStream()));
+
+        char[] buffer = new char[1024];
+
+        String jsonString = new String();
+
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            sb.append(line+"\n");
+        }
+        br.close();
+
+        jsonString = sb.toString();
+
+        System.out.println("JSON: " + jsonString);
+
+        return new JSONObject(jsonString);
+    }
 
 }
