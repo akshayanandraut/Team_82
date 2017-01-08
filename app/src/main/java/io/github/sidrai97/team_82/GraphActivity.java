@@ -82,19 +82,7 @@ String url;
                 low= jsonArray1.getString(3);
                 close= jsonArray1.getString(5);
 
-                for(int i=jsonArray.length()-1;i>0;i--)
 
-                {
-
-                    JSONArray jsonArray2 = jsonArray.getJSONArray(i);
-                    highdp=new DataPoint[jsonArray.length()];
-                    lowdp=new DataPoint[jsonArray.length()];
-                    opendp=new DataPoint[jsonArray.length()];
-                    closedp=new DataPoint[jsonArray.length()];
-
-
-
-                }
 
                 TextView comp_name = (TextView)findViewById(R.id.company_name);
                 TextView high_rate = (TextView)findViewById(R.id.high_rate);
@@ -116,6 +104,10 @@ String url;
 
             GraphView graph = (GraphView) findViewById(R.id.graph);
 
+            highdp=new DataPoint[31];
+            lowdp=new DataPoint[31];
+            opendp=new DataPoint[31];
+            closedp=new DataPoint[31];
             int i1,i2,i3,i4;
             Random r = new Random();
             Random r1 = new Random();
@@ -132,7 +124,6 @@ String url;
                 lowdp[i]=new DataPoint(i,i2);
                 opendp[i]=new DataPoint(i,i3);
                 closedp[i]=new DataPoint(i,i4);
-
             }
 
 
