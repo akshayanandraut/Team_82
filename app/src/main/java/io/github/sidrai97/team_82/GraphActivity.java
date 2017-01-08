@@ -37,6 +37,7 @@ String url;
     final static String PARAM_END_DATE = "end_date";
     JSONObject obj;
     String data="";
+    JSONObject response;
     boolean latch_shows_fetch_data_success=true;//false when success
 
     public class StockDataTask extends AsyncTask<URL,Void,String>{
@@ -69,6 +70,10 @@ String url;
         new StockDataTask().execute(NetworkUtils.buildUrl2(companyName));
 
         while(latch_shows_fetch_data_success){}//stay here until i have stock data
+
+        try{
+            response = new JSONObject(data);
+        }catch (JSONException e){e.printStackTrace();}
         System.out.print("===================="+obj);
 
 
