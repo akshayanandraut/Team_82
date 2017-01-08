@@ -62,30 +62,40 @@ String url;
             open[i]=new DataPoint(i,1);
             close[i]=new DataPoint(i,1);
         }
-        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[] {
 
-        });
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 6),
-                new DataPoint(1, 5),
-                new DataPoint(2, 2),
-                new DataPoint(3, 3),
-                new DataPoint(4, 9)
-        });
+
+
+
+
+
+
+        LineGraphSeries<DataPoint> seriesHigh = new LineGraphSeries<>(high);
+        LineGraphSeries<DataPoint> seriesLow = new LineGraphSeries<>(low);
+        LineGraphSeries<DataPoint> seriesOpen = new LineGraphSeries<>(open);
+        LineGraphSeries<DataPoint> seriesClose = new LineGraphSeries<>(close);
 
 
 
 
 
         //graph1 config
-        series1.setColor(Color.RED);
-        series1.setDrawDataPoints(true);
-        series1.setDataPointsRadius(12);
-        series1.setThickness(8);
-        series2.setColor(Color.CYAN);
-        series2.setDrawDataPoints(true);
-        series2.setDataPointsRadius(12);
-        series2.setThickness(8);
+        seriesHigh.setColor(Color.BLUE);
+        seriesHigh.setDrawDataPoints(true);
+        seriesHigh.setDataPointsRadius(12);
+        seriesHigh.setThickness(8);
+        seriesLow.setColor(Color.RED);
+        seriesLow.setDrawDataPoints(true);
+        seriesLow.setDataPointsRadius(12);
+        seriesLow.setThickness(8);
+        seriesOpen.setColor(Color.GREEN);
+        seriesOpen.setDrawDataPoints(true);
+        seriesOpen.setDataPointsRadius(12);
+        seriesOpen.setThickness(8);
+        seriesClose.setColor(Color.YELLOW);
+        seriesClose.setDrawDataPoints(true);
+        seriesClose.setDataPointsRadius(12);
+        seriesClose.setThickness(8);
+
 
         // set manual X bounds
         graph.getViewport().setYAxisBoundsManual(true);
@@ -105,24 +115,16 @@ String url;
 
 
 
-//Listen on Tap
-/*
-        series1.setOnDataPointTapListener(new OnDataPointTapListener() {
-            @Override
-            public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(GraphActivity.this, ""+dataPoint, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-*/
 
 
 
 
 
 
-        graph.addSeries(series1);
-        graph.addSeries(series2);
+        graph.addSeries(seriesHigh);
+        graph.addSeries(seriesLow);
+        graph.addSeries(seriesOpen);
+        graph.addSeries(seriesClose);
 
 
     }
