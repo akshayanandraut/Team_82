@@ -2,6 +2,7 @@ package io.github.sidrai97.team_82;
 
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -35,11 +36,11 @@ String url;
     final static String PARAM_START_DATE = "start_date";
     final static String PARAM_END_DATE = "end_date";
     JSONObject obj;
-    String data;
+
     String data="";
     boolean latch_shows_fetch_data_success=true;//false when success
 
-    public class StockDataTask extends AsyncTask<URL,Void,String>{
+    public class StockDataTask extends AsyncTask<URL,Void,String> {
         @Override
         protected String doInBackground(URL... params) {
             URL searchUrl = params[0];
