@@ -58,7 +58,9 @@ String url;
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             data=s;
-            latch_shows_fetch_data_success=false;
+            try{
+                response = new JSONObject(data);
+            }catch (JSONException e){e.printStackTrace();}
         }
     }
 
@@ -68,18 +70,8 @@ String url;
         String companyName = getIntent().getExtras().getString("companyName");
         setContentView(R.layout.activity_graph);
 
-        try {
-             data = NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl2(companyName));
-        }
-        catch(IOException e){e.printStackTrace();}
-        System.out.print("===================="+data);
         new StockDataTask().execute(NetworkUtils.buildUrl2(companyName));
 
-        while(latch_shows_fetch_data_success){}//stay here until i have stock data
-
-        try{
-            response = new JSONObject(data);
-        }catch (JSONException e){e.printStackTrace();}
         System.out.print("===================="+obj);
 
 
