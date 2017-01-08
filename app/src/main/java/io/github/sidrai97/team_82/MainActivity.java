@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar mprogress;
     private long refreshTime = 120000;
     ArrayList<String> indexDataList;
+    boolean loadfinish=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
+                Toast.makeText(getApplicationContext(),"Refreshing",Toast.LENGTH_SHORT).show();
                 refresh_data();
                 restartTimer();
             }
@@ -103,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            if(searchUrl.toString().contains("COMMODITIES")){
+                loadfinish=true;
+            }
             return quandlSearchResults;
         }
 
@@ -112,7 +117,11 @@ public class MainActivity extends AppCompatActivity {
             indexDataList.add(s);
             IndexListAdaptor indexListAdaptor = new IndexListAdaptor(MainActivity.this,indexDataList);
             mindexList.setAdapter(indexListAdaptor);
-            mprogress.setVisibility(View.INVISIBLE);
+            if(loadfinish){
+                mprogress.setVisibility(View.INVISIBLE);
+                loadfinish=false;
+            }
+
 
 
            /* mindexList.setOnClickListener(new AdapterView.OnItemClickListener() {
@@ -180,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.refresh_btn){
             Toast.makeText(getApplicationContext(),"Refreshing",Toast.LENGTH_SHORT).show();
             refresh_data();
-            restartTimer();
         }
         else if(item.getItemId() == R.id.favourites_tab){
             Toast.makeText(getApplicationContext(),"show favourites",Toast.LENGTH_SHORT).show();
