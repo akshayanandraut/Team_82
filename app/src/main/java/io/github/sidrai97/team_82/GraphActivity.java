@@ -36,11 +36,12 @@ String url;
     final static String PARAM_START_DATE = "start_date";
     final static String PARAM_END_DATE = "end_date";
     JSONObject obj;
+
     String data="";
     JSONObject response;
     boolean latch_shows_fetch_data_success=true;//false when success
 
-    public class StockDataTask extends AsyncTask<URL,Void,String>{
+    public class StockDataTask extends AsyncTask<URL,Void,String> {
         @Override
         protected String doInBackground(URL... params) {
             URL searchUrl = params[0];
@@ -67,6 +68,11 @@ String url;
         String companyName = getIntent().getExtras().getString("companyName");
         setContentView(R.layout.activity_graph);
 
+        try {
+             data = NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl2(companyName));
+        }
+        catch(IOException e){e.printStackTrace();}
+        System.out.print("===================="+data);
         new StockDataTask().execute(NetworkUtils.buildUrl2(companyName));
 
         while(latch_shows_fetch_data_success){}//stay here until i have stock data
@@ -78,35 +84,52 @@ String url;
 
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
+        DataPoint[] high,low,open,close;
+        high=new DataPoint[31];
+        low=new DataPoint[31];
+        open=new DataPoint[31];
+        close=new DataPoint[31];
+        for(int i=0;i<31;i++)
+        {
+            high[i]=new DataPoint(i,1);
+            low[i]=new DataPoint(i,1);
+            open[i]=new DataPoint(i,1);
+            close[i]=new DataPoint(i,1);
+        }
 
-        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
-        });
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 6),
-                new DataPoint(1, 5),
-                new DataPoint(2, 2),
-                new DataPoint(3, 3),
-                new DataPoint(4, 9)
-        });
+
+
+
+
+
+
+        LineGraphSeries<DataPoint> seriesHigh = new LineGraphSeries<>(high);
+        LineGraphSeries<DataPoint> seriesLow = new LineGraphSeries<>(low);
+        LineGraphSeries<DataPoint> seriesOpen = new LineGraphSeries<>(open);
+        LineGraphSeries<DataPoint> seriesClose = new LineGraphSeries<>(close);
 
 
 
 
 
         //graph1 config
-        series1.setColor(Color.RED);
-        series1.setDrawDataPoints(true);
-        series1.setDataPointsRadius(12);
-        series1.setThickness(8);
-        series2.setColor(Color.CYAN);
-        series2.setDrawDataPoints(true);
-        series2.setDataPointsRadius(12);
-        series2.setThickness(8);
+        seriesHigh.setColor(Color.BLUE);
+        seriesHigh.setDrawDataPoints(true);
+        seriesHigh.setDataPointsRadius(12);
+        seriesHigh.setThickness(8);
+        seriesLow.setColor(Color.RED);
+        seriesLow.setDrawDataPoints(true);
+        seriesLow.setDataPointsRadius(12);
+        seriesLow.setThickness(8);
+        seriesOpen.setColor(Color.GREEN);
+        seriesOpen.setDrawDataPoints(true);
+        seriesOpen.setDataPointsRadius(12);
+        seriesOpen.setThickness(8);
+        seriesClose.setColor(Color.YELLOW);
+        seriesClose.setDrawDataPoints(true);
+        seriesClose.setDataPointsRadius(12);
+        seriesClose.setThickness(8);
+
 
         // set manual X bounds
         graph.getViewport().setYAxisBoundsManual(true);
@@ -126,24 +149,16 @@ String url;
 
 
 
-//Listen on Tap
-/*
-        series1.setOnDataPointTapListener(new OnDataPointTapListener() {
-            @Override
-            public void onTap(Series series, DataPointInterface dataPoint) {
-                Toast.makeText(GraphActivity.this, ""+dataPoint, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-*/
 
 
 
 
 
 
-        graph.addSeries(series1);
-        graph.addSeries(series2);
+        graph.addSeries(seriesHigh);
+        graph.addSeries(seriesLow);
+        graph.addSeries(seriesOpen);
+        graph.addSeries(seriesClose);
 
 
     }
