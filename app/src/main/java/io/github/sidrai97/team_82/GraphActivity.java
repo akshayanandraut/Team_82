@@ -1,6 +1,7 @@
 package io.github.sidrai97.team_82;
 
 import android.graphics.Color;
+import android.icu.util.RangeValueIterator;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Random;
 
 public class GraphActivity extends AppCompatActivity {
 String url;
@@ -61,6 +63,7 @@ String url;
             try{
                 response = new JSONObject(data);
             }catch (JSONException e){e.printStackTrace();}
+            Toast.makeText(getApplicationContext(),"got data",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -74,35 +77,35 @@ String url;
 
         System.out.print("===================="+obj);
 
-
         GraphView graph = (GraphView) findViewById(R.id.graph);
         DataPoint[] high,low,open,close;
         high=new DataPoint[31];
         low=new DataPoint[31];
         open=new DataPoint[31];
         close=new DataPoint[31];
+        int i1,i2,i3,i4;
+        Random r = new Random();
+        Random r1 = new Random();
+        Random r2 = new Random();
+        Random r3 = new Random();
+
         for(int i=0;i<31;i++)
         {
-            high[i]=new DataPoint(i,1);
-            low[i]=new DataPoint(i,1);
-            open[i]=new DataPoint(i,1);
-            close[i]=new DataPoint(i,1);
+            i1 = r.nextInt(100 - 1) + 1;
+            i2 = r1.nextInt(100 - 1) + 1;
+            i3 = r2.nextInt(100 - 1) + 1;
+            i4 = r3.nextInt(100 - 1) + 1;
+            high[i]=new DataPoint(i,i1);
+            low[i]=new DataPoint(i,i2);
+            open[i]=new DataPoint(i,i3);
+            close[i]=new DataPoint(i,i4);
         }
-
-
-
-
-
 
 
         LineGraphSeries<DataPoint> seriesHigh = new LineGraphSeries<>(high);
         LineGraphSeries<DataPoint> seriesLow = new LineGraphSeries<>(low);
         LineGraphSeries<DataPoint> seriesOpen = new LineGraphSeries<>(open);
         LineGraphSeries<DataPoint> seriesClose = new LineGraphSeries<>(close);
-
-
-
-
 
         //graph1 config
         seriesHigh.setColor(Color.BLUE);
@@ -139,19 +142,10 @@ String url;
         graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
         graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
 
-
-
-
-
-
-
-
-
         graph.addSeries(seriesHigh);
         graph.addSeries(seriesLow);
         graph.addSeries(seriesOpen);
         graph.addSeries(seriesClose);
-
 
     }
 
