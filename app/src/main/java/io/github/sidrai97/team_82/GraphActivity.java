@@ -41,30 +41,10 @@ String url;
         String companyName = getIntent().getExtras().getString("companyName");
         setContentView(R.layout.activity_graph);
 
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
-
-        Uri builtUri = Uri.parse(QUANDL_BASE_URL+companyName+".json").buildUpon()
-                .appendQueryParameter(PARAM_API_KEY, API_KEY)
-                .appendQueryParameter(PARAM_START_DATE, new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()))
-                .build();
-
-        URL url = null;
         try {
-            url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+            String data = NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl2(companyName));
         }
-
-
-        try {
-            obj = getJSONObjectFromURL(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        catch(IOException e){e.printStackTrace();}
         System.out.print("===================="+obj);
 
 
