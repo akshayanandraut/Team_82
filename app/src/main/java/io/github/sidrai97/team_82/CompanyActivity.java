@@ -41,9 +41,11 @@ import java.util.HashMap;
 import static android.R.id.list;
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
+/**
+ * Created by HP on 07-01-2017.
+ */
+
 public class CompanyActivity extends AppCompatActivity {
-
-
     ListView list;
     //get company names for selected type
     String[] companyList;
@@ -54,8 +56,6 @@ public class CompanyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_company);
         Bundle extras = getIntent().getExtras();
         stockName = extras.getString("stockName");
-
-        //System.out.println("CHECK THIS Out--------->  "+companyList[3]);
        try {
             JSONObject obj = new JSONObject(loadJSONFromAsset());
            System.out.println("JSON OBJ1 ---------------------->"+obj);
@@ -63,30 +63,20 @@ public class CompanyActivity extends AppCompatActivity {
            System.out.println("JSON OBJ2 ---------------------->"+obj1);
 
            JSONArray m_jArry = obj1.getJSONArray("stock_url");
-           //System.out.println("CHECK THIS Out--------->  ");
-            //Toast.makeText(CompanyActivity.this,"-------------"+m_jArry,Toast.LENGTH_SHORT).show();
             int i=0;
             companyList = new String[m_jArry.length()];
-           System.out.println("CHECK THIS Out--------->  "+companyList[3]);
             do
             {
                 companyList[i] = m_jArry.getString(i);
                 i++;
             }while(i<m_jArry.length());
-
-            System.out.println("CHECK THIS Out--------->  "+companyList[3]);
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-
-
         CustomListAdapterCompany adapter=new CustomListAdapterCompany(this, companyList);
         list=(ListView)findViewById(R.id.companyList);
         list.setAdapter(adapter);
-
 
         list.setOnItemClickListener(new OnItemClickListener() {
 
@@ -101,32 +91,9 @@ public class CompanyActivity extends AppCompatActivity {
                 i.putExtra("companyName",""+companyList[+position]);
                 System.out.println(position);
                 startActivity(i);
-                //Toast.makeText(getApplicationContext(), selectedItem.replaceAll("_"," "), Toast.LENGTH_SHORT).show();
-
             }
         });
-/*
-        try {
-            JSONObject obj = new JSONObject(loadJSONFromAsset());
-            JSONObject obj1 = obj.getJSONObject(stockName);
-            JSONArray m_jArry = obj1.getJSONArray("stock_url");
-
-            System.out.println(m_jArry);
-            // Toast.makeText(getApplicationContext(), , Toast.LENGTH_SHORT).show();
-
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-        */
-
-
     }
-
-
-
-
-
     public String loadJSONFromAsset() {
         String json = null;
         try {

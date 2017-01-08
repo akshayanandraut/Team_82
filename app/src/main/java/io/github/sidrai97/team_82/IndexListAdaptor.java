@@ -16,7 +16,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
 public class IndexListAdaptor extends BaseAdapter {
 
     ArrayList<String> arrayList;
@@ -57,13 +56,11 @@ public class IndexListAdaptor extends BaseAdapter {
         JSONObject obj=null;
         try {
             obj = new JSONObject((String) getItem(position));
-           // Toast.makeText(context,"-------------------\n"+obj,Toast.LENGTH_SHORT).show();
 
             String fullname = obj.getJSONObject("dataset").getString("name");
             int pos = fullname.lastIndexOf("-");
             String name = fullname.substring(pos+1);
             myViewHolder.nse_tag.setText(name);
-            //Log.d("JSON ME LAGE","BAMBOO");
             JSONArray all_data=obj.getJSONObject("dataset").getJSONArray("data");
             JSONArray latest_data=all_data.getJSONArray(0);
 
@@ -87,7 +84,6 @@ public class IndexListAdaptor extends BaseAdapter {
         }catch (JSONException e){e.printStackTrace();}
         return convertView;
     }
-
     private class MyViewHolder{
         TextView nse_tag,nse_date,nse_high_to_low,nse_rise_fall;
 

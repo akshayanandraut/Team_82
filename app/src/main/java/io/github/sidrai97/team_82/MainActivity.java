@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 mindexList.setAdapter(indexListAdaptor);
                 mprogress.setVisibility(View.INVISIBLE);
                 loadfinish=false;
-               // mymenu.findItem(R.id.refresh_btn).setEnabled(true);
+                mymenu.findItem((int)R.id.refresh_btn).setEnabled(true);
             }
 
 
@@ -130,10 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
                     String item = (String) mindexList.getItemAtPosition(position);
-                    //Toast.makeText(MainActivity.this,""+item,Toast.LENGTH_LONG).show();
                     try {
-                        //JSONObject mainObject = new JSONObject();
-
                         JSONObject uniObject = obj.getJSONObject(""+position);
                         String selectedItem = uniObject.getString("name").replaceAll(" ","_");
                        Toast.makeText(MainActivity.this,"MAIN: POS->> "+position,Toast.LENGTH_SHORT).show();
@@ -180,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
             indexDataList = new ArrayList<String>();
             makeQuandlSearchQuery();
             restartTimer();
-            //indexListAdaptor.notifyDataSetChanged();
         }
     }
 
@@ -204,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(item.getItemId() == R.id.favourites_tab){
             Toast.makeText(getApplicationContext(),"show favourites",Toast.LENGTH_SHORT).show();
-            //intent to go to favourites activity
         }
         return super.onOptionsItemSelected(item);
     }
