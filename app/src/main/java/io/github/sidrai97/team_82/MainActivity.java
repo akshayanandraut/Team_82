@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static io.github.sidrai97.team_82.R.id.refresh_btn;
+
 public class MainActivity extends AppCompatActivity {
 
     private int latch_delay=2000;
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 mindexList.setAdapter(indexListAdaptor);
                 mprogress.setVisibility(View.INVISIBLE);
                 loadfinish=false;
-                mymenu.findItem((int)R.id.refresh_btn).setEnabled(true);
+                mymenu.findItem(refresh_btn).setEnabled(true);
             }
 
 
@@ -194,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.refresh_btn){
+        if(item.getItemId() == refresh_btn){
             Toast.makeText(getApplicationContext(),"Refreshing",Toast.LENGTH_SHORT).show();
             refresh_data();
         }
