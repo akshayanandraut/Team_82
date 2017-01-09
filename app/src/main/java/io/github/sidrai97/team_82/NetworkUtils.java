@@ -21,7 +21,7 @@ public class NetworkUtils {
 
     public static URL buildUrl(String quandlSearchQuery) {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -2);
+        cal.add(Calendar.DATE, -20);
 
         Uri builtUri = Uri.parse(QUANDL_BASE_URL+quandlSearchQuery+".json").buildUpon()
                 .appendQueryParameter(PARAM_API_KEY, API_KEY)
@@ -40,14 +40,13 @@ public class NetworkUtils {
 
     public static URL buildUrl2(String quandlSearchQuery) {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -2);
+        cal.add(Calendar.DATE, -31);
         Calendar cal2 = Calendar.getInstance();
         cal.add(Calendar.DATE, -31);
 
         Uri builtUri = Uri.parse(QUANDL_BASE_URL+quandlSearchQuery+".json").buildUpon()
                 .appendQueryParameter(PARAM_API_KEY, API_KEY)
                 .appendQueryParameter(PARAM_START_DATE, new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()))
-                .appendQueryParameter(PARAM_END_DATE, new SimpleDateFormat("yyyy-MM-dd").format(cal2.getTime()))
                 .build();
 
         URL url = null;
