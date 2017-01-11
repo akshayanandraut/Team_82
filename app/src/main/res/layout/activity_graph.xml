@@ -134,5 +134,14 @@
         android:id="@+id/high_rate"
         android:layout_below="@+id/textView10"
         android:layout_alignStart="@+id/textView10" />
+
+    <ProgressBar
+        android:id="@+id/graph_progress"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_alignTop="@+id/graph"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="139dp"
+        android:visibility="visible"/>
 </RelativeLayout>
 </ScrollView>

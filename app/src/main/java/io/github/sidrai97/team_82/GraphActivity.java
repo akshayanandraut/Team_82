@@ -6,8 +6,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ String url;
     final static String PARAM_END_DATE = "end_date";
     JSONObject obj;
     String open,high,low,date,close;
+    ProgressBar progressBar;
 
     String data="";
     JSONObject jsonObject;
@@ -171,6 +174,8 @@ String url;
             graph.addSeries(seriesLow);
             graph.addSeries(seriesOpen);
             graph.addSeries(seriesClose);
+
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -182,7 +187,7 @@ String url;
 
         new StockDataTask().execute(NetworkUtils.buildUrl2(companyName));
 
-
+        progressBar = (ProgressBar) findViewById(R.id.graph_progress);
 
 
 
