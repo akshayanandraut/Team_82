@@ -84,9 +84,6 @@ String url;
                 high= jsonArray1.getString(2);
                 low= jsonArray1.getString(3);
                 close= jsonArray1.getString(5);
-
-
-
                 TextView comp_name = (TextView)findViewById(R.id.company_name);
                 TextView high_rate = (TextView)findViewById(R.id.high_rate);
                 TextView low_rate = (TextView)findViewById(R.id.low_rate);
@@ -98,6 +95,26 @@ String url;
                 open_rate.setText(open);
                 close_rate.setText(close);
 
+                highdp=new DataPoint[jsonArray.length()];
+                lowdp=new DataPoint[jsonArray.length()];
+                opendp=new DataPoint[jsonArray.length()];
+                closedp=new DataPoint[jsonArray.length()];
+
+
+                System.out.println("----------->>>>"+jsonArray.getJSONArray(0).getString(0)+"\n ARRAY LENGTH :"+jsonArray.length());
+                System.out.println("----------->>>>"+jsonArray.getJSONArray(43).getString(2));
+                //date 0
+                //open 1
+                //high 2
+                //low 3
+                //close 5
+                for(int i=jsonArray.length()-1;i>=0;i--)
+                {
+                    highdp[i]=new DataPoint(i,(int) Double.parseDouble(jsonArray.getJSONArray(i).getString(2)));
+                    lowdp[i]=new DataPoint(i,(int) Double.parseDouble(jsonArray.getJSONArray(i).getString(3)));
+                    opendp[i]=new DataPoint(i, (int)Double.parseDouble(jsonArray.getJSONArray(i).getString(1)));
+                    closedp[i]=new DataPoint(i,(int) Double.parseDouble(jsonArray.getJSONArray(i).getString(5)));
+                }
 
 
             } catch (JSONException e) {
@@ -107,27 +124,26 @@ String url;
 
             GraphView graph = (GraphView) findViewById(R.id.graph);
 
-            highdp=new DataPoint[31];
-            lowdp=new DataPoint[31];
-            opendp=new DataPoint[31];
-            closedp=new DataPoint[31];
-            int i1,i2,i3,i4;
+
+            /*int i1,i2,i3,i4;
             Random r = new Random();
             Random r1 = new Random();
             Random r2 = new Random();
             Random r3 = new Random();
 
+
             for(int i=0;i<31;i++)
-            {
-                i1 = r.nextInt(100 - 1) + 1;
-                i2 = r1.nextInt(100 - 1) + 1;
-                i3 = r2.nextInt(100 - 1) + 1;
-                i4 = r3.nextInt(100 - 1) + 1;
-                highdp[i]=new DataPoint(i,i1);
-                lowdp[i]=new DataPoint(i,i2);
-                opendp[i]=new DataPoint(i,i3);
-                closedp[i]=new DataPoint(i,i4);
-            }
+                {
+                    i1 = r.nextInt(100 - 1) + 1;
+                    i2 = r1.nextInt(100 - 1) + 1;
+                    i3 = r2.nextInt(100 - 1) + 1;
+                    i4 = r3.nextInt(100 - 1) + 1;
+                    highdp[i]=new DataPoint(i,i1);
+                    lowdp[i]=new DataPoint(i,i2);
+                    opendp[i]=new DataPoint(i,i3);
+                    closedp[i]=new DataPoint(i,i4);
+
+                }*/
 
 
             LineGraphSeries<DataPoint> seriesHigh = new LineGraphSeries<>(highdp);

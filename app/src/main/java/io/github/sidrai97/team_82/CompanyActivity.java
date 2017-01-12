@@ -1,10 +1,13 @@
 package io.github.sidrai97.team_82;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.os.SystemClock;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +43,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static android.R.attr.button;
 import static android.R.id.list;
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 import static io.github.sidrai97.team_82.R.id.refresh_btn;
@@ -98,7 +102,23 @@ public class CompanyActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                // TODO Auto-generated method stub
+
+               // Log.v("long clicked","pos: " + pos);
+               // Toast.makeText(CompanyActivity.this,"pos:"+pos,Toast.LENGTH_SHORT).show();
+               //type your code here to diaplay add to favourite dialog
+
+
+                return true;
+            }
+        });
+
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {
