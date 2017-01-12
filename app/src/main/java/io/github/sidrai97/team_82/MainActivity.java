@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler;
     private int REFRESH_DELAY=10000;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
