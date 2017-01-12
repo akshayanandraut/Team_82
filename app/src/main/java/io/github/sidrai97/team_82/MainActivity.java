@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     boolean loadfinish=false;
     Menu mymenu;
     private Handler mHandler;
-    private int REFRESH_DELAY=10000;
+    private int REFRESH_DELAY=120000;
 
 
     @Override
