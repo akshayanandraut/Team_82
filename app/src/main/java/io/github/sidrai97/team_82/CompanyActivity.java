@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import io.github.sidrai97.team_82.*;
 import android.view.View;
@@ -56,8 +58,71 @@ public class CompanyActivity extends AppCompatActivity {
     ListView list;
     //get company names for selected type
     String[] companyList;
+    ArrayList<String> arrayList=new ArrayList<String>();
+    ArrayList<String> companyName=new ArrayList<String>();
     private String stockName;
     Menu mymenu;
+    ProgressBar progressBar;
+
+    public class MyTask extends AsyncTask<String[],Void,String>{
+        @Override
+        protected String doInBackground(String[]... params) {
+            for (int i=0;i<params[0].length;i++) {
+                String temp="";
+                try {
+                    temp=NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl(params[0][i]));
+                }catch (IOException e){e.printStackTrace();}
+                catch(Exception e){e.printStackTrace();continue;}
+                if(temp!="" || temp != null){
+                    arrayList.add(temp);
+                    companyName.add(params[0][i]);
+                }
+            }
+            /*System.out.println("\n\n-----------\n\n"+params[0][0]+"\n\n--------\n\n\n");
+            try {
+                arrayList.add(NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl(params[0][0])));
+            }catch (IOException e){e.printStackTrace();}*/
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            IndexListAdaptor indexListAdaptor = new IndexListAdaptor(CompanyActivity.this,arrayList);
+            list.setAdapter(indexListAdaptor);
+            progressBar.setVisibility(View.INVISIBLE);
+
+            list.setOnItemClickListener(new OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    // TODO Auto-generated method stub
+
+                    //String selectedItem= companyList[+position];
+                    String selectedItem= arrayList.get(position);
+                    Intent i = new Intent(CompanyActivity.this,GraphActivity.class);
+                    i.putExtra("companyName",""+companyName.get(position));
+
+                    startActivity(i);
+                }
+            });
+            list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                               int pos, long id) {
+                    // TODO Auto-generated method stub
+
+                    // Log.v("long clicked","pos: " + pos);
+                    // Toast.makeText(CompanyActivity.this,"pos:"+pos,Toast.LENGTH_SHORT).show();
+                    //type your code here to diaplay add to favourite dialog
+
+
+                    return true;
+                }
+            });
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +130,8 @@ public class CompanyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_company);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        list=(ListView)findViewById(R.id.companyList);
+        progressBar=(ProgressBar)findViewById(R.id.company_progress);
 
         Bundle extras = getIntent().getExtras();
         stockName = extras.getString("stockName");
@@ -83,40 +150,11 @@ public class CompanyActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        CustomListAdapterCompany adapter=new CustomListAdapterCompany(this, companyList);
+        new MyTask().execute(companyList);
+        /*CustomListAdapterCompany adapter=new CustomListAdapterCompany(this, companyList);
         list=(ListView)findViewById(R.id.companyList);
         list.setAdapter(adapter);
-
-        list.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // TODO Auto-generated method stub
-
-                String selectedItem= companyList[+position];
-
-                Intent i = new Intent(CompanyActivity.this,GraphActivity.class);
-                i.putExtra("companyName",""+companyList[+position]);
-
-                startActivity(i);
-            }
-        });
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-                                           int pos, long id) {
-                // TODO Auto-generated method stub
-
-               // Log.v("long clicked","pos: " + pos);
-               // Toast.makeText(CompanyActivity.this,"pos:"+pos,Toast.LENGTH_SHORT).show();
-               //type your code here to diaplay add to favourite dialog
-
-
-                return true;
-            }
-        });
-
+*/
     }
 
 

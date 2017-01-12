@@ -101,8 +101,8 @@ String url;
                 closedp=new DataPoint[jsonArray.length()];
 
 
-                System.out.println("----------->>>>"+jsonArray.getJSONArray(0).getString(0)+"\n ARRAY LENGTH :"+jsonArray.length());
-                System.out.println("----------->>>>"+jsonArray.getJSONArray(43).getString(2));
+//                System.out.println("----------->>>>"+jsonArray.getJSONArray(0).getString(0)+"\n ARRAY LENGTH :"+jsonArray.length());
+     //           System.out.println("----------->>>>"+jsonArray.getJSONArray(43).getString(2));
                 //date 0    //open 1     //high 2      //low 3     //close 5
                 for(int i=jsonArray.length()-1;i>=0;i--)
                 {
@@ -177,6 +177,7 @@ String url;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String companyName = getIntent().getExtras().getString("companyName");
+        System.out.println("\n\n-----\n"+companyName+"\n\n-----\n\n");
         setContentView(R.layout.activity_graph);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

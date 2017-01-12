@@ -33,7 +33,7 @@ import static io.github.sidrai97.team_82.R.id.refresh_btn;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int latch_delay=2000;
+    private int latch_delay=7000;
     private long refresh_delay=60000;
     private boolean app_latch=false;
     private JSONObject obj=null;
