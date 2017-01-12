@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,9 +77,11 @@ public class IndexListAdaptor extends BaseAdapter {
             if(rf>0){
                 rf_set=" +"+rf;
                 myViewHolder.nse_rise_fall.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+                myViewHolder.arrow_btn.setImageResource(R.drawable.up_arrow);
             }else{
                 rf_set=" "+rf;
                 myViewHolder.nse_rise_fall.setTextColor(ContextCompat.getColor(context,R.color.danger));
+                myViewHolder.arrow_btn.setImageResource(R.drawable.down_arrow);
             }
             myViewHolder.nse_rise_fall.setText(rf_set);
         }catch (JSONException e){e.printStackTrace();}
@@ -86,12 +89,14 @@ public class IndexListAdaptor extends BaseAdapter {
     }
     private class MyViewHolder{
         TextView nse_tag,nse_date,nse_high_to_low,nse_rise_fall;
+        ImageView arrow_btn;
 
         public MyViewHolder(View item){
             nse_tag = (TextView)item.findViewById(R.id.nse_tag);
             nse_date = (TextView)item.findViewById(R.id.nse_date);
             nse_high_to_low = (TextView)item.findViewById(R.id.nse_high_to_low);
             nse_rise_fall = (TextView)item.findViewById(R.id.nse_rise_fall);
+            arrow_btn = (ImageView) item.findViewById(R.id.index_arrow_btn);
         }
     }
 }

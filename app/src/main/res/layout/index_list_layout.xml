@@ -34,9 +34,15 @@
             android:text="06/01"/>
         <TextView
             android:id="@+id/nse_rise_fall"
-            android:layout_width="170dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="+500"
+            android:text="-500"
+            android:textColor="@color/danger"
             android:layout_gravity="right"/>
+        <ImageView
+            android:id="@+id/index_arrow_btn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/down_arrow"/>
     </LinearLayout>
 </LinearLayout>
