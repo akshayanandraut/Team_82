@@ -103,11 +103,7 @@ String url;
 
                 System.out.println("----------->>>>"+jsonArray.getJSONArray(0).getString(0)+"\n ARRAY LENGTH :"+jsonArray.length());
                 System.out.println("----------->>>>"+jsonArray.getJSONArray(43).getString(2));
-                //date 0
-                //open 1
-                //high 2
-                //low 3
-                //close 5
+                //date 0    //open 1     //high 2      //low 3     //close 5
                 for(int i=jsonArray.length()-1;i>=0;i--)
                 {
                     highdp[i]=new DataPoint(i,(int) Double.parseDouble(jsonArray.getJSONArray(i).getString(2)));
@@ -125,25 +121,7 @@ String url;
             GraphView graph = (GraphView) findViewById(R.id.graph);
 
 
-            /*int i1,i2,i3,i4;
-            Random r = new Random();
-            Random r1 = new Random();
-            Random r2 = new Random();
-            Random r3 = new Random();
 
-
-            for(int i=0;i<31;i++)
-                {
-                    i1 = r.nextInt(100 - 1) + 1;
-                    i2 = r1.nextInt(100 - 1) + 1;
-                    i3 = r2.nextInt(100 - 1) + 1;
-                    i4 = r3.nextInt(100 - 1) + 1;
-                    highdp[i]=new DataPoint(i,i1);
-                    lowdp[i]=new DataPoint(i,i2);
-                    opendp[i]=new DataPoint(i,i3);
-                    closedp[i]=new DataPoint(i,i4);
-
-                }*/
 
 
             LineGraphSeries<DataPoint> seriesHigh = new LineGraphSeries<>(highdp);
@@ -217,40 +195,6 @@ String url;
         return true;
     }
 
-    public  JSONObject getJSONObjectFromURL(URL urlString) throws IOException, JSONException {
 
-        HttpURLConnection urlConnection = null;
-
-        URL url = urlString;
-
-        urlConnection = (HttpURLConnection) url.openConnection();
-
-        urlConnection.setRequestMethod("GET");
-        urlConnection.setReadTimeout(10000 /* milliseconds */);
-        urlConnection.setConnectTimeout(15000 /* milliseconds */);
-
-        urlConnection.setDoOutput(true);
-
-        urlConnection.connect();
-
-        BufferedReader br=new BufferedReader(new InputStreamReader(url.openStream()));
-
-        char[] buffer = new char[1024];
-
-        String jsonString = new String();
-
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) {
-            sb.append(line+"\n");
-        }
-        br.close();
-
-        jsonString = sb.toString();
-
-        System.out.println("JSON: " + jsonString);
-
-        return new JSONObject(jsonString);
-    }
 
 }

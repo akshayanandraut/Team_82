@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> indexDataList;
     boolean loadfinish=false;
     Menu mymenu;
+    private Handler mHandler;
+    private int REFRESH_DELAY=10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,28 +58,23 @@ public class MainActivity extends AppCompatActivity {
             obj = new JSONObject(loadJSON());
         }catch(JSONException e){e.printStackTrace();}
 
-
-
-
+        this.mHandler = new Handler();
         refresh_data();
-        //restartTimer();
-    }
+        this.mHandler.postDelayed(m_Runnable,REFRESH_DELAY);
 
-    public void restartTimer()
+    }
+    private final Runnable m_Runnable = new Runnable()
     {
-        new CountDownTimer(refreshTime, refreshTime) {
+        public void run()
 
-            public void onTick(long millisUntilFinished) {
+        {
+            refresh_data();
+            MainActivity.this.mHandler.postDelayed(m_Runnable, REFRESH_DELAY);
+        }
 
-            }
+    };
 
-            public void onFinish() {
-                Toast.makeText(getApplicationContext(),"Refreshing",Toast.LENGTH_SHORT).show();
-                refresh_data();
-                restartTimer();
-            }
-        };
-    }
+
     private void makeQuandlSearchQuery() {
         String murl="";
 
@@ -181,7 +178,9 @@ public class MainActivity extends AppCompatActivity {
             //fetch data from internet via asyntask and use asyc task to perform refresh instead of this func
             indexDataList = new ArrayList<String>();
             makeQuandlSearchQuery();
-            restartTimer();
+            mHandler.removeCallbacks(m_Runnable);
+            this.mHandler.postDelayed(m_Runnable,REFRESH_DELAY);
+
         }
     }
 
