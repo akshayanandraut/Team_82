@@ -8,6 +8,8 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -40,6 +42,7 @@ import java.util.HashMap;
 
 import static android.R.id.list;
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+import static io.github.sidrai97.team_82.R.id.refresh_btn;
 
 /**
  * Created by HP on 07-01-2017.
@@ -50,10 +53,15 @@ public class CompanyActivity extends AppCompatActivity {
     //get company names for selected type
     String[] companyList;
     private String stockName;
+    Menu mymenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Bundle extras = getIntent().getExtras();
         stockName = extras.getString("stockName");
        try {
@@ -91,6 +99,32 @@ public class CompanyActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
+/*    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        mymenu=menu;
+        getMenuInflater().inflate(R.menu.app_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == refresh_btn){
+            Toast.makeText(getApplicationContext(),"Refreshing",Toast.LENGTH_SHORT).show();
+            refresh_data();
+        }
+        else if(item.getItemId() == R.id.favourites_tab){
+            Toast.makeText(getApplicationContext(),"show favourites",Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }*/
+
     public String loadJSONFromAsset() {
         String json = null;
         try {

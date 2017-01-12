@@ -185,12 +185,20 @@ String url;
         String companyName = getIntent().getExtras().getString("companyName");
         setContentView(R.layout.activity_graph);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         new StockDataTask().execute(NetworkUtils.buildUrl2(companyName));
 
         progressBar = (ProgressBar) findViewById(R.id.graph_progress);
 
 
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     public  JSONObject getJSONObjectFromURL(URL urlString) throws IOException, JSONException {
