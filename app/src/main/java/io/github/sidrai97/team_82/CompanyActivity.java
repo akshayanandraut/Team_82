@@ -18,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import io.github.sidrai97.team_82.*;
 import android.view.View;
@@ -63,6 +64,7 @@ public class CompanyActivity extends AppCompatActivity {
     private String stockName;
     Menu mymenu;
     ProgressBar progressBar;
+    TextView textView;
 
     public class MyTask extends AsyncTask<String[],Void,String>{
         @Override
@@ -132,12 +134,17 @@ public class CompanyActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         list=(ListView)findViewById(R.id.companyList);
         progressBar=(ProgressBar)findViewById(R.id.company_progress);
+        textView=(TextView)findViewById(R.id.index_name);
 
         Bundle extras = getIntent().getExtras();
         stockName = extras.getString("stockName");
        try {
             JSONObject obj = new JSONObject(loadJSONFromAsset());
             JSONObject obj1 = obj.getJSONObject(""+stockName);
+
+           String indexname=obj1.getString("name");
+           textView.setText(indexname);
+
             JSONArray m_jArry = obj1.getJSONArray("stock_url");
             int i=0;
             companyList = new String[m_jArry.length()];

@@ -76,7 +76,10 @@ String url;
             System.out.println("response: ---------->>> "+jsonObject);
             try {
                 JSONObject obj = jsonObject.getJSONObject("dataset");
-                System.out.println("response: ---------->>> "+obj.getString("name"));
+                //System.out.println("response: ---------->>> "+obj.getString("name"));
+                String sdate=obj.getString("start_date");
+                String edate=obj.getString("end_date");
+
                 JSONArray jsonArray = obj.getJSONArray("data");
                 JSONArray jsonArray1 = jsonArray.getJSONArray(0);
                 date= jsonArray1.getString(0);
@@ -89,7 +92,7 @@ String url;
                 TextView low_rate = (TextView)findViewById(R.id.low_rate);
                 TextView open_rate = (TextView)findViewById(R.id.open_rate);
                 TextView close_rate = (TextView)findViewById(R.id.close_rate);
-                comp_name.setText(""+obj.getString("name"));
+                comp_name.setText(""+obj.getString("name")+"\n\nResults from: "+sdate+" - "+edate);
                 high_rate.setText(high);
                 low_rate.setText(low);
                 open_rate.setText(open);
